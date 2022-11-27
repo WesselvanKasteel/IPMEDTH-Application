@@ -37,9 +37,6 @@ public class DevCreateAnchors : MonoBehaviour
     private void Start()
     {
         line.positionCount = 2;
-
-        // Update logs
-        logs.text = logs.text + "<br>-------------";
     }
 
     void OnEnable()
@@ -80,10 +77,10 @@ public class DevCreateAnchors : MonoBehaviour
 
                     // Update line renderer
                     line.SetPosition(0, new Vector3(0, 0, 0));
-                    line.SetPosition(1, curPrefab.transform.position);
+                    line.SetPosition(1, newPrefab.transform.position);
 
                     // Update logs
-                    logs.text += "<br>[ Image tracked. ]";
+                    logs.text += "<br>[ Image tracked " + newPrefab.transform.position +  ". ]";
                 }
             }
         }
