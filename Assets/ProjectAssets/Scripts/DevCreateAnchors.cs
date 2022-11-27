@@ -78,16 +78,12 @@ public class DevCreateAnchors : MonoBehaviour
                     // Add the created prefab to our array
                     _instantiatedPrefabs[imageName] = newPrefab;
 
-                    // Reset line renderer points 
-                    line.SetPosition(0, Vector3.zero);
-                    line.SetPosition(1, Vector3.zero);
-
                     // Update line renderer
                     line.SetPosition(0, new Vector3(0, 0, 0));
-                    line.SetPosition(1, trackedImage.transform.position);
+                    line.SetPosition(1, curPrefab.transform.position);
 
-                    // Call update logs
-                    updateLogs();
+                    // Update logs
+                    logs.text += "<br>[ Image tracked. ]";
                 }
             }
         }
@@ -111,14 +107,5 @@ public class DevCreateAnchors : MonoBehaviour
             // Or, simply set the prefab instance to inactive
             //_instantiatedPrefabs[trackedImage.referenceImage.name].SetActive(false);
         }
-    }
-
-    private void updateLogs()
-    {
-        // Update logs
-        logs.text = logs.text + "<br>[ Image tracked (" +
-            "x: " + prefabLocation.transform.position.x + " " +
-            "y: " + prefabLocation.transform.position.y + " " +
-            "z: " + prefabLocation.transform.position.z + "). ]";
     }
 }
