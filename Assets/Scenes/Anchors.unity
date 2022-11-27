@@ -541,9 +541,8 @@ GameObject:
   - component: {fileID: 1980885842}
   - component: {fileID: 1980885841}
   - component: {fileID: 1980885844}
-  - component: {fileID: 1980885843}
+  - component: {fileID: 1980885847}
   - component: {fileID: 1980885846}
-  - component: {fileID: 1980885845}
   m_Layer: 0
   m_Name: AR Session Origin
   m_TagString: Untagged
@@ -580,21 +579,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1980885843
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1980885840}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e06b7e22477de4092c3e4531f6ad7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ArPrefabs:
-  - {fileID: 8858282004731033645, guid: a004977a3e3398a41a2ae2a46c22cf40, type: 3}
-  - {fileID: 5902381371451228215, guid: cfa81f3c989b3564e8a4fe5f936a6037, type: 3}
 --- !u!114 &1980885844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -609,24 +593,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SerializedLibrary: {fileID: 11400000, guid: 44dd646d72cf45c4f9a10561e76c99be,
     type: 2}
-  m_MaxNumberOfMovingImages: 0
+  m_MaxNumberOfMovingImages: 2
   m_TrackedImagePrefab: {fileID: 0}
---- !u!114 &1980885845
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1980885840}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20c220c64934c8b44a35701ddfe5f445, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  line: {fileID: 1980885846}
-  worldOrigin: {fileID: 1310867544}
-  objectOrigin: {fileID: 2309565985832127171, guid: a004977a3e3398a41a2ae2a46c22cf40,
-    type: 3}
 --- !u!120 &1980885846
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -647,7 +615,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fe3ff206d8de5b34cab682ae2753abc4, type: 2}
+  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -673,13 +641,13 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.5
+    widthMultiplier: 1
     widthCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 0.008769855
+        time: 0.019802094
+        value: 0.012937546
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -726,6 +694,22 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &1980885847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980885840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a66c98bd5d608844bb70249e5810ecc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: {fileID: 1980885846}
+  ArPrefabs:
+  - {fileID: 8858282004731033645, guid: a004977a3e3398a41a2ae2a46c22cf40, type: 3}
+  - {fileID: 6865032141799108351, guid: cfa81f3c989b3564e8a4fe5f936a6037, type: 3}
 --- !u!1 &2142139156
 GameObject:
   m_ObjectHideFlags: 0

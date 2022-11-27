@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class DevLineDrawer : MonoBehaviour
 {
-
     public LineRenderer line;
 
     public Transform worldOrigin;
