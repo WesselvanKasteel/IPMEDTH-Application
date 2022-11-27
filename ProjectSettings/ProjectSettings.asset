@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Groep_2_IPMEDTH
-  productName: AR-Tracking
+  productName: AR-Anchors
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -157,7 +157,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.Groep_2_IPMEDTH.ARApplication
     Standalone: com.DefaultCompany.com.unity.template.ar
-    iPhone: com.Groep-2-IPMEDTH.AR-Tracking
+    iPhone: com.Groep-2-IPMEDTH.AR-Anchors
   buildNumber:
     Standalone: 0
     iPhone: 0
@@ -275,7 +275,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 9f1a669c3396cdc468a60ac1b3d1a9e3, type: 3}
+      m_Icon: {fileID: 2800000, guid: a342fee39effa2b4cba2443c9caf9435, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
