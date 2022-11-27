@@ -25,7 +25,7 @@ public class DevCreateAnchors : MonoBehaviour
     private Transform prefabLocation;
 
     // Reference logs text in canvas
-    [SerializeField] private TextMeshProUGUI logs;
+    public TextMeshProUGUI logs;
 
 
     void Awake()
@@ -37,6 +37,9 @@ public class DevCreateAnchors : MonoBehaviour
     private void Start()
     {
         line.positionCount = 2;
+
+        // Update logs
+        logs.text = logs.text + "<br>-------------";
     }
 
     void OnEnable()
