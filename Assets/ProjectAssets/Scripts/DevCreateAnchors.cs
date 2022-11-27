@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
@@ -22,6 +23,9 @@ public class DevCreateAnchors : MonoBehaviour
 
     // Transform variable of active prefab
     private Transform prefabLocation;
+
+    // Reference logs text in canvas
+    public TextMeshProUGUI logs;
 
 
     void Awake()
@@ -68,10 +72,18 @@ public class DevCreateAnchors : MonoBehaviour
                     // Instantiate the prefab, parenting it to the ARTrackedImage
                     var newPrefab = Instantiate(curPrefab, trackedImage.transform);
 
-                    prefabLocation = curPrefab.transform;
-
                     // Add the created prefab to our array
                     _instantiatedPrefabs[imageName] = newPrefab;
+
+                    // Update line renderer
+                    line.SetPosition(0, new Vector3(0, 0, 0));
+                    line.SetPosition(1, trackedImage.transform.position);
+
+                    // Update logs
+                    logs.text = logs.text + "<br>[ Image tracked (" +
+                        "x: " + prefabLocation.transform.position.x + " " +
+                        "y: " + prefabLocation.transform.position.y + " " +
+                        "z: " + prefabLocation.transform.position.z + "). ]";
                 }
             }
         }
@@ -94,16 +106,6 @@ public class DevCreateAnchors : MonoBehaviour
             _instantiatedPrefabs.Remove(trackedImage.referenceImage.name);
             // Or, simply set the prefab instance to inactive
             //_instantiatedPrefabs[trackedImage.referenceImage.name].SetActive(false);
-        }
-    }
-
-    private void Update()
-    {
-        if (prefabLocation != null)
-        {
-            // Update line positions
-            line.SetPosition(0, new Vector3(0, 0, 0));
-            line.SetPosition(1, prefabLocation.position);
         }
     }
 }
