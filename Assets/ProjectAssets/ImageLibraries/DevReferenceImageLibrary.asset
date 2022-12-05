@@ -35,5 +35,5 @@ MonoBehaviour:
       m_GuidHigh: 104067475307454009
     m_Size: {x: 0.4807229, y: 0.75}
     m_SpecifySize: 1
-    m_Name: DevMarkerStele
+    m_Name: DevMarker
     m_Texture: {fileID: 0}

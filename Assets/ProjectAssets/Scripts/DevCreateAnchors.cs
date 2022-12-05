@@ -24,8 +24,8 @@ public class DevCreateAnchors : MonoBehaviour
     // Transform variable of active prefab
     private Transform prefabLocation;
 
-    // Reference logs text in canvas
-    public TextMeshProUGUI logs;
+    // Reference DevLogger script
+    private DevPositionCalculator positionCalculator;
 
 
     void Awake()
@@ -37,6 +37,9 @@ public class DevCreateAnchors : MonoBehaviour
     private void Start()
     {
         line.positionCount = 2;
+
+        // Get component 'DevLogger'
+        positionCalculator = GameObject.FindGameObjectWithTag("PositionCalculator").GetComponent<DevPositionCalculator>();
     }
 
     void OnEnable()
@@ -79,8 +82,8 @@ public class DevCreateAnchors : MonoBehaviour
                     line.SetPosition(0, new Vector3(0, 0, 0));
                     line.SetPosition(1, newPrefab.transform.position);
 
-                    // Update logs
-                    logs.text += "<br>[ Image tracked " + newPrefab.transform.position +  ". ]";
+                    // Call updatePositionImageTrack on DevPositionCalculator
+                    positionCalculator.updatePositionImageTrack(newPrefab.transform);
                 }
             }
         }
