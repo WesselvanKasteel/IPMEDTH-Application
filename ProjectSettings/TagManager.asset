@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Logs
+  - PositionCalculator
   layers:
   - Default
   - TransparentFX

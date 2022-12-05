@@ -24,7 +24,7 @@ public class DevCreateAnchors : MonoBehaviour
     // Transform variable of active prefab
     private Transform prefabLocation;
 
-    // Reference DevLogger script
+    // Reference DevPositionCalculator script
     private DevPositionCalculator positionCalculator;
 
 
@@ -38,7 +38,7 @@ public class DevCreateAnchors : MonoBehaviour
     {
         line.positionCount = 2;
 
-        // Get component 'DevLogger'
+        // Get component DevPositionCalculator
         positionCalculator = GameObject.FindGameObjectWithTag("PositionCalculator").GetComponent<DevPositionCalculator>();
     }
 
@@ -64,6 +64,9 @@ public class DevCreateAnchors : MonoBehaviour
             // Get the name of the reference image
             var imageName = trackedImage.referenceImage.name;
 
+            // Call updatePositionImageTrack on DevPositionCalculator
+            positionCalculator.updatePositionImageTrack(trackedImage.transform);
+
             // Now loop over the array of prefabs
             foreach (var curPrefab in ArPrefabs)
             {
@@ -81,9 +84,6 @@ public class DevCreateAnchors : MonoBehaviour
                     // Update line renderer
                     line.SetPosition(0, new Vector3(0, 0, 0));
                     line.SetPosition(1, newPrefab.transform.position);
-
-                    // Call updatePositionImageTrack on DevPositionCalculator
-                    positionCalculator.updatePositionImageTrack(newPrefab.transform);
                 }
             }
         }

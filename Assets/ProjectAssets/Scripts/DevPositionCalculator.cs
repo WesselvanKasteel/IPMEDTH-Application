@@ -1,15 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
-using UnityEditor;
 using UnityEngine;
 
 public class DevPositionCalculator : MonoBehaviour
 {
-    // Array of strings containing the names of gameObjects whose position need to be tracked
-    private string[] objectsToBeTracked = { "DevMarker" };
-
     // GameObjects
     public GameObject ArCamera;
     // Minimum Mobile displacement to recognize 
@@ -33,8 +28,6 @@ public class DevPositionCalculator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Invoke("FindAll", 2);
-
         // Get component 'DevLogger'
         devLogger = GameObject.FindGameObjectWithTag("Logs").GetComponent<DevLogger>();
         // Call printLogMessage from 'DevLogger'
@@ -44,7 +37,6 @@ public class DevPositionCalculator : MonoBehaviour
         lastPositionMobile = ArCamera.transform.position;
         // Update lastPositionImageTrack
         lastPositionImageTrack = new Vector3(0, 0, 0);
-
     }
 
     // Update is called once per frame
@@ -66,7 +58,7 @@ public class DevPositionCalculator : MonoBehaviour
                 lastPositionMobile = transformMobile.transform.position;
 
                 // Call printLogMessage from 'DevLogger'
-                devLogger.printLogMessage("item: Mobile - position: " + transformMobile.transform.position + " - rotation: " + transformMobile.transform.rotation);
+                devLogger.printLogMessage("item: Mobile - pos: " + transformMobile.transform.position + " - rot: " + transformMobile.transform.rotation);
             }
         }
 
@@ -83,33 +75,9 @@ public class DevPositionCalculator : MonoBehaviour
                 lastPositionImageTrack = transformImageTrack.transform.position;
 
                 // Call printLogMessage from 'DevLogger'
-                devLogger.printLogMessage("item: ImageTrack - position: " + transformImageTrack.transform.position + " - rotation: " + transformImageTrack.transform.rotation);
+                devLogger.printLogMessage("item: ImageTrack - pos: " + transformImageTrack.transform.position + " - rot: " + transformImageTrack.transform.rotation);
             }
         }
-    }
-
-    private void FindAll()
-    {
-        Object[] tempList = Resources.FindObjectsOfTypeAll(typeof(GameObject));
-        List<GameObject> realList = new List<GameObject>();
-        GameObject temp;
-
-        foreach (Object obj in tempList)
-        {
-            if (obj is GameObject)
-            {
-                temp = (GameObject)obj;
-                if (temp.hideFlags == HideFlags.None && objectsToBeTracked.Contains(temp.name) && temp.transform.position != new Vector3(0,0,0)) 
-                {
-                    realList.Add((GameObject)obj);
-
-                    // Call printLogMessage from 'DevLogger'
-                    devLogger.printLogMessage("item: " + temp.name + " - position: " + temp.transform.position);
-                }
-            }
-        }
-
-        Selection.objects = realList.ToArray();
     }
 
     private void updatePositionMobile(Transform transform)
