@@ -6,7 +6,7 @@ using UnityEngine;
 public class DevPositionCalculator : MonoBehaviour
 {
     // Array of strings containing the names of gameObjects whose position need to be tracked
-    private string[] objectsToBeTracked = { "DevMarker" }
+    private string[] objectsToBeTracked = { "DevMarker" };
 
     // GameObjects
     public GameObject ArCamera;
@@ -111,29 +111,5 @@ public class DevPositionCalculator : MonoBehaviour
                 }
             }
         }
-    }
-
-    private void updateAll()
-    {
-        Object[] tempList = Resources.FindObjectsOfTypeAll(typeof(GameObject));
-        List<GameObject> realList = new List<GameObject>();
-        GameObject temp;
-
-        foreach (Object obj in tempList)
-        {
-            if (obj is GameObject)
-            {
-                temp = (GameObject)obj;
-                if (temp.hideFlags == HideFlags.None && objectsToBeTracked.Contains(temp.name) && temp.transform.position != new Vector3(0, 0, 0))
-                {
-                    realList.Add((GameObject)obj);
-
-                    // Call printLogMessage from 'DevLogger'
-                    devLogger.printLogMessage("item: " + temp.name + " - position: " + temp.transform.position);
-                }
-            }
-        }
-
-        Selection.objects = realList.ToArray();
     }
 }
