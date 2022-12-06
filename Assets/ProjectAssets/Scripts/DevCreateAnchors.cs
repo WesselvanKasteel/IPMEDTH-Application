@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -27,6 +28,9 @@ public class DevCreateAnchors : MonoBehaviour
     // Reference DevPositionCalculator script
     private DevPositionCalculator positionCalculator;
 
+    // Reference DevLogger script
+    private DevLogger devLogger;
+
 
     void Awake()
     {
@@ -40,6 +44,8 @@ public class DevCreateAnchors : MonoBehaviour
 
         // Get component DevPositionCalculator
         positionCalculator = GameObject.FindGameObjectWithTag("PositionCalculator").GetComponent<DevPositionCalculator>();
+        // Get component 'DevLogger'
+        devLogger = GameObject.FindGameObjectWithTag("Logs").GetComponent<DevLogger>();
     }
 
     void OnEnable()
@@ -54,39 +60,51 @@ public class DevCreateAnchors : MonoBehaviour
         _trackedImagesManager.trackedImagesChanged -= OnTrackedImagesChanged;
     }
 
+    IEnumerator TrackedImageCoroutine(ARTrackedImagesChangedEventArgs eventArgs)
+    {
+        foreach (var trackedImage in eventArgs.added)
+        {
+            Transform trackedImagePosition = trackedImage.transform;
+            yield return null;
+            positionCalculator.updatePositionImageTrack(trackedImagePosition);
+        }
+    }
+
     // Event Handler
     private void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
     {
 
+        StartCoroutine(TrackedImageCoroutine(eventArgs));
+
         // Loop through all new tracked images that have been detected
-        foreach (var trackedImage in eventArgs.added)
-        {
-            // Get the name of the reference image
-            var imageName = trackedImage.referenceImage.name;
+        //foreach (var trackedImage in eventArgs.added)
+        //{
+        //    // Get the name of the reference image
+        //    var imageName = trackedImage.referenceImage.name;
 
-            // Call updatePositionImageTrack on DevPositionCalculator
-            positionCalculator.updatePositionImageTrack(trackedImage.transform);
+        //    // Call updatePositionImageTrack on DevPositionCalculator
+        //    positionCalculator.updatePositionImageTrack(trackedImage.transform);
 
-            // Now loop over the array of prefabs
-            foreach (var curPrefab in ArPrefabs)
-            {
-                // Check whether this prefab matches the tracked image name, and that
-                // the prefab hasn't already been created
-                if (string.Compare(curPrefab.name, imageName, StringComparison.OrdinalIgnoreCase) == 0
-                    && !_instantiatedPrefabs.ContainsKey(imageName))
-                {
-                    // Instantiate the prefab, parenting it to the ARTrackedImage
-                    var newPrefab = Instantiate(curPrefab, trackedImage.transform);
+        //    // Now loop over the array of prefabs
+        //    foreach (var curPrefab in ArPrefabs)
+        //    {
+        //        // Check whether this prefab matches the tracked image name, and that
+        //        // the prefab hasn't already been created
+        //        if (string.Compare(curPrefab.name, imageName, StringComparison.OrdinalIgnoreCase) == 0
+        //            && !_instantiatedPrefabs.ContainsKey(imageName))
+        //        {
+        //            // Instantiate the prefab, parenting it to the ARTrackedImage
+        //            var newPrefab = Instantiate(curPrefab, trackedImage.transform);
 
-                    // Add the created prefab to our array
-                    _instantiatedPrefabs[imageName] = newPrefab;
+        //            // Add the created prefab to our array
+        //            _instantiatedPrefabs[imageName] = newPrefab;
 
-                    // Update line renderer
-                    line.SetPosition(0, new Vector3(0, 0, 0));
-                    line.SetPosition(1, newPrefab.transform.position);
-                }
-            }
-        }
+        //            // Update line renderer
+        //            line.SetPosition(0, new Vector3(0, 0, 0));
+        //            line.SetPosition(1, newPrefab.transform.position);
+        //        }
+        //    }
+        //}
 
         // For all prefabs that have been created so far, set them active or not depending
         // on whether their corresponding image is currently being tracked

@@ -96,6 +96,8 @@ public class DevPositionCalculator : MonoBehaviour
         }
         else
         {
+
+            devLogger.printLogMessage("Snoempert :)");
             Object[] tempList = Resources.FindObjectsOfTypeAll(typeof(GameObject));
             GameObject temp;
 
@@ -104,6 +106,10 @@ public class DevPositionCalculator : MonoBehaviour
                 if (obj is GameObject)
                 {
                     temp = (GameObject)obj;
+
+                    devLogger.printLogMessage(temp.name + "pos: " + temp.transform.position);
+
+
                     if (temp.hideFlags == HideFlags.None && objectsToBeTracked.Contains(temp.name) && temp.transform.position != new Vector3(0, 0, 0))
                     {
                         transformImageTrack = temp.transform;
