@@ -62,49 +62,50 @@ public class DevCreateAnchors : MonoBehaviour
 
     IEnumerator TrackedImageCoroutine(ARTrackedImagesChangedEventArgs eventArgs)
     {
+        //Loop through all new tracked images that have been detected
         foreach (var trackedImage in eventArgs.added)
         {
-            Transform trackedImagePosition = trackedImage.transform;
+            // Get the transform of the reference image
+            Transform trackedImageTransform = trackedImage.transform;
+
+            // Get the name of the reference image
+            var imageName = trackedImage.referenceImage.name;
+
+            // Call updatePositionImageTrack on DevPositionCalculator
+            positionCalculator.updatePositionImageTrack(trackedImage.transform);
+
+
+            // Now loop over the array of prefabs
+            foreach (var curPrefab in ArPrefabs)
+            {
+                // Check whether this prefab matches the tracked image name, and that
+                // the prefab hasn't already been created
+                if (string.Compare(curPrefab.name, imageName, StringComparison.OrdinalIgnoreCase) == 0
+                    && !_instantiatedPrefabs.ContainsKey(imageName))
+                {
+                    // Instantiate the prefab, parenting it to the ARTrackedImage
+                    var newPrefab = Instantiate(curPrefab, trackedImage.transform);
+
+                    // Add the created prefab to our array
+                    _instantiatedPrefabs[imageName] = newPrefab;
+
+
+                }
+            }
+            // Update line renderer
+            line.SetPosition(0, new Vector3(0, 0, 0));
             yield return null;
-            positionCalculator.updatePositionImageTrack(trackedImagePosition);
+            positionCalculator.updatePositionImageTrack(trackedImageTransform);
+            line.SetPosition(1, trackedImageTransform.position);
         }
     }
 
     // Event Handler
     private void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
     {
-
         StartCoroutine(TrackedImageCoroutine(eventArgs));
 
-        // Loop through all new tracked images that have been detected
-        //foreach (var trackedImage in eventArgs.added)
-        //{
-        //    // Get the name of the reference image
-        //    var imageName = trackedImage.referenceImage.name;
 
-        //    // Call updatePositionImageTrack on DevPositionCalculator
-        //    positionCalculator.updatePositionImageTrack(trackedImage.transform);
-
-        //    // Now loop over the array of prefabs
-        //    foreach (var curPrefab in ArPrefabs)
-        //    {
-        //        // Check whether this prefab matches the tracked image name, and that
-        //        // the prefab hasn't already been created
-        //        if (string.Compare(curPrefab.name, imageName, StringComparison.OrdinalIgnoreCase) == 0
-        //            && !_instantiatedPrefabs.ContainsKey(imageName))
-        //        {
-        //            // Instantiate the prefab, parenting it to the ARTrackedImage
-        //            var newPrefab = Instantiate(curPrefab, trackedImage.transform);
-
-        //            // Add the created prefab to our array
-        //            _instantiatedPrefabs[imageName] = newPrefab;
-
-        //            // Update line renderer
-        //            line.SetPosition(0, new Vector3(0, 0, 0));
-        //            line.SetPosition(1, newPrefab.transform.position);
-        //        }
-        //    }
-        //}
 
         // For all prefabs that have been created so far, set them active or not depending
         // on whether their corresponding image is currently being tracked
