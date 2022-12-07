@@ -31,6 +31,9 @@ public class DevCreateAnchors : MonoBehaviour
     // Reference DevLogger script
     private DevLogger devLogger;
 
+    // Develop variables (remove later) ---------------------------
+    public GameObject artPlaceholder;
+    // ------------------------------------------------------------
 
     void Awake()
     {
@@ -71,10 +74,6 @@ public class DevCreateAnchors : MonoBehaviour
             // Get the name of the reference image
             var imageName = trackedImage.referenceImage.name;
 
-            // Call updatePositionImageTrack on DevPositionCalculator
-            positionCalculator.updatePositionImageTrack(trackedImage.transform);
-
-
             // Now loop over the array of prefabs
             foreach (var curPrefab in ArPrefabs)
             {
@@ -88,15 +87,13 @@ public class DevCreateAnchors : MonoBehaviour
 
                     // Add the created prefab to our array
                     _instantiatedPrefabs[imageName] = newPrefab;
-
-
                 }
             }
-            // Update line renderer
-            line.SetPosition(0, new Vector3(0, 0, 0));
             yield return null;
-            positionCalculator.updatePositionImageTrack(trackedImageTransform);
-            line.SetPosition(1, trackedImageTransform.position);
+
+            // Call updatePositionImageTrack on DevPositionCalculator
+            positionCalculator.updatePositionImageTrack(trackedImage.transform);
+            Instantiate(artPlaceholder, trackedImage.transform);
         }
     }
 
@@ -104,8 +101,6 @@ public class DevCreateAnchors : MonoBehaviour
     private void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
     {
         StartCoroutine(TrackedImageCoroutine(eventArgs));
-
-
 
         // For all prefabs that have been created so far, set them active or not depending
         // on whether their corresponding image is currently being tracked

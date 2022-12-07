@@ -953,7 +953,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -977,7 +977,7 @@ LineRenderer:
   m_Positions: []
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.25
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -1022,7 +1022,7 @@ LineRenderer:
       m_Mode: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    numCornerVertices: 0
+    numCornerVertices: 5
     numCapVertices: 0
     alignment: 0
     textureMode: 0
@@ -1046,6 +1046,7 @@ MonoBehaviour:
   ArPrefabs:
   - {fileID: 8858282004731033645, guid: a004977a3e3398a41a2ae2a46c22cf40, type: 3}
   - {fileID: 6865032141799108351, guid: cfa81f3c989b3564e8a4fe5f936a6037, type: 3}
+  artPlaceholder: {fileID: 0}
 --- !u!1 &2117773633
 GameObject:
   m_ObjectHideFlags: 0
@@ -1078,6 +1079,7 @@ MonoBehaviour:
   ArCamera: {fileID: 1425784558}
   thresholdMobile: 0.5
   thresholdImageTrack: 0.5
+  line: {fileID: 1980885846}
 --- !u!4 &2117773635
 Transform:
   m_ObjectHideFlags: 0

@@ -27,6 +27,13 @@ public class DevPositionCalculator : MonoBehaviour
     // Reference DevLogger script
     private DevLogger devLogger;
 
+    // Develop variables (remove later) ---------------------------
+
+    // Reference LineRenderer component
+    public LineRenderer line;
+    private List<Vector3> linePositions = new List<Vector3>();
+    private float thresholdLine = 0.1f;
+    // ------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
@@ -63,6 +70,14 @@ public class DevPositionCalculator : MonoBehaviour
                 // Call printLogMessage from 'DevLogger'
                 devLogger.printLogMessage("item: Mobile - pos: " + transformMobile.transform.position + " - rot: " + transformMobile.transform.rotation);
             }
+
+
+            if (offsetMobile.x > thresholdLine || offsetMobile.x < -thresholdLine ||
+                offsetMobile.y > thresholdLine || offsetMobile.y < -thresholdLine ||
+                offsetMobile.z > thresholdLine || offsetMobile.z < -thresholdLine)
+            {
+                StartCoroutine(AddPointToLine(transformMobile.transform.position));
+            }
         }
 
         if (transformImageTrack != null)
@@ -85,7 +100,7 @@ public class DevPositionCalculator : MonoBehaviour
 
     private void updatePositionMobile(Transform transform)
     {
-        transformMobile = transform;;
+        transformMobile = transform; ;
     }
 
     public void updatePositionImageTrack(Transform transform)
@@ -96,8 +111,6 @@ public class DevPositionCalculator : MonoBehaviour
         }
         else
         {
-
-            devLogger.printLogMessage("Snoempert :)");
             Object[] tempList = Resources.FindObjectsOfTypeAll(typeof(GameObject));
             GameObject temp;
 
@@ -107,9 +120,6 @@ public class DevPositionCalculator : MonoBehaviour
                 {
                     temp = (GameObject)obj;
 
-                    devLogger.printLogMessage(temp.name + "pos: " + temp.transform.position);
-
-
                     if (temp.hideFlags == HideFlags.None && objectsToBeTracked.Contains(temp.name) && temp.transform.position != new Vector3(0, 0, 0))
                     {
                         transformImageTrack = temp.transform;
@@ -117,5 +127,18 @@ public class DevPositionCalculator : MonoBehaviour
                 }
             }
         }
+    }
+
+    IEnumerator AddPointToLine(Vector3 position)
+    {
+        yield return null;
+        linePositions.Add(position);
+        drawLine();
+    }
+
+    private void drawLine()
+    {
+        line.positionCount = linePositions.Count;
+        line.SetPositions(linePositions.ToArray());
     }
 }
