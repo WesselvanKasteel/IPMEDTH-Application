@@ -6,19 +6,24 @@ using UnityEngine;
 public class DevPositionCalculator : MonoBehaviour
 {
     // Array of strings containing the names of gameObjects whose position need to be tracked
-    private string[] objectsToBeTracked = { "DevMarker" };
+    private string[] objectsToBeTracked = { "DevMarker1", "DevMarker2", "DevMarker3" };
 
     // GameObjects
     public GameObject ArCamera;
-    // Minimum Mobile displacement to recognize 
-    public float thresholdMobile = 0.5f;
-    // Minimum ImageTrack displacement to recognize 
-    public float thresholdImageTrack = 0.25f;
+    public GameObject Anchor;
+    public GameObject[] Interactions;
+
+    // Thresholds
+    public float thresholdMobile;
+    public float thresholdImageTrack;
 
     // Points
     private Vector3 positionWorldOrigin = new Vector3(0, 0, 0);
     private Transform transformMobile;
+    // REMOVE when logs are no longer needed
     private Transform transformImageTrack;
+    // -------------------------------------
+    private Transform anchorpointInteractions;
 
     // Last point positions
     private Vector3 lastPositionMobile;
@@ -27,32 +32,30 @@ public class DevPositionCalculator : MonoBehaviour
     // Reference DevLogger script
     private DevLogger devLogger;
 
-    // Develop variables (remove later) ---------------------------
+    // TEST prefab
+    public GameObject TestPrefab1;
+    public GameObject TestPrefab2;
 
-    // Reference LineRenderer component
-    public LineRenderer line;
-    private List<Vector3> linePositions = new List<Vector3>();
-    private float thresholdLine = 0.1f;
-    // ------------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
     {
         // Get component 'DevLogger'
         devLogger = GameObject.FindGameObjectWithTag("Logs").GetComponent<DevLogger>();
-        // Call printLogMessage from 'DevLogger'
-        devLogger.printLogMessage("item: WorldOrigin - position: " + positionWorldOrigin);
 
         // Update lastPositionMobile
         lastPositionMobile = ArCamera.transform.position;
+
         // Update lastPositionImageTrack
         lastPositionImageTrack = new Vector3(0, 0, 0);
+
+        devLogger.printLogMessage("item: World Origin - pos: (0.00, 0.00, 0.00)");
+
+        anchorpointInteractions = new GameObject().transform;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // Call updatePositionMobile 
         updatePositionMobile(ArCamera.transform);
 
         if (transformMobile != null)
@@ -69,14 +72,6 @@ public class DevPositionCalculator : MonoBehaviour
 
                 // Call printLogMessage from 'DevLogger'
                 devLogger.printLogMessage("item: Mobile - pos: " + transformMobile.transform.position + " - rot: " + transformMobile.transform.rotation);
-            }
-
-
-            if (offsetMobile.x > thresholdLine || offsetMobile.x < -thresholdLine ||
-                offsetMobile.y > thresholdLine || offsetMobile.y < -thresholdLine ||
-                offsetMobile.z > thresholdLine || offsetMobile.z < -thresholdLine)
-            {
-                StartCoroutine(AddPointToLine(transformMobile.transform.position));
             }
         }
 
@@ -100,14 +95,21 @@ public class DevPositionCalculator : MonoBehaviour
 
     private void updatePositionMobile(Transform transform)
     {
-        transformMobile = transform; ;
+        transformMobile = transform;
     }
 
-    public void updatePositionImageTrack(Transform transform)
+    public void updatePositionImageTrack(Transform trackedImageTransform, string trackedImageName)
     {
-        if (transform.position != new Vector3(0, 0, 0))
+        //nameImageTrack = name;
+
+        Instantiate(TestPrefab1, trackedImageTransform);
+
+        if (trackedImageTransform.position != new Vector3(0, 0, 0))
         {
+            // REMOVE when logs are no longer needed
             transformImageTrack = transform;
+
+            calculatePositions(trackedImageTransform, trackedImageName);
         }
         else
         {
@@ -122,23 +124,60 @@ public class DevPositionCalculator : MonoBehaviour
 
                     if (temp.hideFlags == HideFlags.None && objectsToBeTracked.Contains(temp.name) && temp.transform.position != new Vector3(0, 0, 0))
                     {
+                        // REMOVE when logs are no longer needed
                         transformImageTrack = temp.transform;
+
+                        calculatePositions(trackedImageTransform, trackedImageName);
                     }
                 }
             }
         }
     }
 
-    IEnumerator AddPointToLine(Vector3 position)
+    private void calculatePositions(Transform trackedImageTransform, string trackedImageName)
     {
-        yield return null;
-        linePositions.Add(position);
-        drawLine();
-    }
+        devLogger.printLogMessage("name: " + trackedImageName + " transform: " + trackedImageTransform.position);
 
-    private void drawLine()
-    {
-        line.positionCount = linePositions.Count;
-        line.SetPositions(linePositions.ToArray());
+        bool anchorPlaced = false;
+
+        // Vector3 trackedImagePosition = trackedImageTransform.position;
+
+        // Vector3 newPosition = new Vector3(trackedImageTransform.position.x, trackedImageTransform.position.y, trackedImageTransform.localPosition.x + 1);
+
+        // devLogger.printLogMessage("New position: " + newPosition); 
+
+        // Instantiate(TestPrefab2, newPosition, trackedImageTransform.rotation);
+
+        switch (trackedImageName)
+        {
+            case "DevMarker1":
+                devLogger.printLogMessage("name: DevMarker1");
+                break;
+
+            case "DevMarker2":
+                devLogger.printLogMessage("name: DevMarker2");
+                break;
+
+            case "DevMarker3":
+                devLogger.printLogMessage("name: DevMarker3");
+                break;
+        }
+
+        if (anchorPlaced)
+        {
+
+            foreach (GameObject interaction in Interactions)
+            {
+                switch (interaction.name)
+                {
+                    case "DevMarker1":
+                        break;
+                    case "DevMarker2":
+                        break;
+                    case "DevMarker3":
+                        break;
+                }
+            }
+        }
     }
 }

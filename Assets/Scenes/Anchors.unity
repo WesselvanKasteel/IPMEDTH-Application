@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.4440221, g: 0.49316514, b: 0.5722316, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -931,7 +931,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SerializedLibrary: {fileID: 11400000, guid: 44dd646d72cf45c4f9a10561e76c99be,
     type: 2}
-  m_MaxNumberOfMovingImages: 2
+  m_MaxNumberOfMovingImages: 3
   m_TrackedImagePrefab: {fileID: 0}
 --- !u!120 &1980885846
 LineRenderer:
@@ -1042,11 +1042,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a66c98bd5d608844bb70249e5810ecc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  line: {fileID: 1980885846}
   ArPrefabs:
-  - {fileID: 8858282004731033645, guid: a004977a3e3398a41a2ae2a46c22cf40, type: 3}
-  - {fileID: 6865032141799108351, guid: cfa81f3c989b3564e8a4fe5f936a6037, type: 3}
-  artPlaceholder: {fileID: 0}
+  - {fileID: 8858282004731033645, guid: 5f1684ad5396ed84bab04636528fbffc, type: 3}
+  - {fileID: 8858282004731033645, guid: 8a9159afb8a4ffc40be1d7b20e3cdb12, type: 3}
+  - {fileID: 8858282004731033645, guid: 93054b953f999c24cb6833d648e1b808, type: 3}
 --- !u!1 &2117773633
 GameObject:
   m_ObjectHideFlags: 0
@@ -1077,9 +1076,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ArCamera: {fileID: 1425784558}
+  Anchor: {fileID: 8858282004731033645, guid: 8a8c658a86c611d45985f21e4e34cfdc, type: 3}
+  Interactions:
+  - {fileID: 8858282004731033645, guid: 5f1684ad5396ed84bab04636528fbffc, type: 3}
+  - {fileID: 8858282004731033645, guid: 8a9159afb8a4ffc40be1d7b20e3cdb12, type: 3}
+  - {fileID: 8858282004731033645, guid: 93054b953f999c24cb6833d648e1b808, type: 3}
   thresholdMobile: 0.5
   thresholdImageTrack: 0.5
-  line: {fileID: 1980885846}
+  TestPrefab1: {fileID: 8858282004731033645, guid: 5f1684ad5396ed84bab04636528fbffc,
+    type: 3}
+  TestPrefab2: {fileID: 8858282004731033645, guid: 8a9159afb8a4ffc40be1d7b20e3cdb12,
+    type: 3}
 --- !u!4 &2117773635
 Transform:
   m_ObjectHideFlags: 0
