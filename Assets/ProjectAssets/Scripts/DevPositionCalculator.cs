@@ -118,10 +118,6 @@ public class DevPositionCalculator : MonoBehaviour
 
     public void updatePositionImageTrack(Transform trackedImageTransform, string trackedImageName)
     {
-        //nameImageTrack = name;
-
-        Instantiate(TestPrefab1, trackedImageTransform);
-
         if (trackedImageTransform.position != new Vector3(0, 0, 0))
         {
             // REMOVE when logs are no longer needed
