@@ -23,7 +23,7 @@ public class DevPositionCalculator : MonoBehaviour
     // REMOVE when logs are no longer needed
     private Transform transformImageTrack;
     // -------------------------------------
-    private Transform anchorpointInteractions;
+    //private Transform anchorpointInteractions;
 
     // Last point positions
     private Vector3 lastPositionMobile;
@@ -35,6 +35,8 @@ public class DevPositionCalculator : MonoBehaviour
     // TEST prefab
     public GameObject TestPrefab1;
     public GameObject TestPrefab2;
+
+    private Transform emptyAnchor;
 
 
     // Start is called before the first frame update
@@ -51,7 +53,9 @@ public class DevPositionCalculator : MonoBehaviour
 
         devLogger.printLogMessage("item: World Origin - pos: (0.00, 0.00, 0.00)");
 
-        anchorpointInteractions = new GameObject().transform;
+        // anchorpointInteractions = new GameObject().transform;
+
+        emptyAnchor = new GameObject().transform;
     }
 
     void Update()
@@ -136,48 +140,56 @@ public class DevPositionCalculator : MonoBehaviour
 
     private void calculatePositions(Transform trackedImageTransform, string trackedImageName)
     {
-        devLogger.printLogMessage("name: " + trackedImageName + " transform: " + trackedImageTransform.position);
+        // devLogger.printLogMessage("name: " + trackedImageName + " transform: " + trackedImageTransform.position);
 
-        bool anchorPlaced = false;
+        // bool anchorPlaced = false;
 
-        // Vector3 trackedImagePosition = trackedImageTransform.position;
+        // image(1, 1, 1)
+        Vector3 trackedImagePosition = trackedImageTransform.position;
 
-        // Vector3 newPosition = new Vector3(trackedImageTransform.position.x, trackedImageTransform.position.y, trackedImageTransform.localPosition.x + 1);
+        // // new pos (1, 1, 2)
+        // Vector3 newPosition = new Vector3(trackedImageTransform.position.x, trackedImageTransform.position.y, trackedImageTransform.localPosition.z);
 
-        // devLogger.printLogMessage("New position: " + newPosition); 
+        emptyAnchor.rotation = trackedImageTransform.rotation;
 
-        // Instantiate(TestPrefab2, newPosition, trackedImageTransform.rotation);
+        emptyAnchor.position = trackedImageTransform.position + 0 * trackedImageTransform.right;
+        emptyAnchor.position = trackedImageTransform.position + 0 * trackedImageTransform.up;
+        emptyAnchor.position = trackedImageTransform.position + (float)0.5 * trackedImageTransform.forward; 
 
-        switch (trackedImageName)
-        {
-            case "DevMarker1":
-                devLogger.printLogMessage("name: DevMarker1");
-                break;
+        Instantiate(TestPrefab2, emptyAnchor);
 
-            case "DevMarker2":
-                devLogger.printLogMessage("name: DevMarker2");
-                break;
+        devLogger.printLogMessage("ImagePos: " + trackedImagePosition + " NewPos: " + emptyAnchor.transform.position); 
 
-            case "DevMarker3":
-                devLogger.printLogMessage("name: DevMarker3");
-                break;
-        }
+        // switch (trackedImageName)
+        // {
+        //     case "DevMarker1":
+        //         //devLogger.printLogMessage("name: DevMarker1");
+        //         break;
 
-        if (anchorPlaced)
-        {
+        //     case "DevMarker2":
+        //         //devLogger.printLogMessage("name: DevMarker2");
+        //         break;
 
-            foreach (GameObject interaction in Interactions)
-            {
-                switch (interaction.name)
-                {
-                    case "DevMarker1":
-                        break;
-                    case "DevMarker2":
-                        break;
-                    case "DevMarker3":
-                        break;
-                }
-            }
-        }
+        //     case "DevMarker3":
+        //         //devLogger.printLogMessage("name: DevMarker3");
+        //         break;
+        // }
+
+        // if (anchorPlaced)
+        // {
+
+        //     foreach (GameObject interaction in Interactions)
+        //     {
+        //         switch (interaction.name)
+        //         {
+        //             case "DevMarker1":
+        //                 break;
+        //             case "DevMarker2":
+        //                 break;
+        //             case "DevMarker3":
+        //                 break;
+        //         }
+        //     }
+        // }
     }
 }
