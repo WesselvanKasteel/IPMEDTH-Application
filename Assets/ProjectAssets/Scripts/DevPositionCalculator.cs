@@ -23,7 +23,6 @@ public class DevPositionCalculator : MonoBehaviour
     // REMOVE when logs are no longer needed
     private Transform transformImageTrack;
     // -------------------------------------
-    //private Transform anchorpointInteractions;
 
     // Last point positions
     private Vector3 lastPositionMobile;
@@ -35,9 +34,14 @@ public class DevPositionCalculator : MonoBehaviour
     // TEST prefab
     public GameObject TestPrefab1;
     public GameObject TestPrefab2;
+    public GameObject TestPrefab3;
 
-    private Transform emptyAnchor;
+    private Transform emptyAnchorTransform;
 
+    private GameObject AnchorInstance;
+    private GameObject TestPrefab1Instance;
+    private GameObject TestPrefab2Instance;
+    private GameObject TestPrefab3Instance;
 
     // Start is called before the first frame update
     void Start()
@@ -53,9 +57,19 @@ public class DevPositionCalculator : MonoBehaviour
 
         devLogger.printLogMessage("item: World Origin - pos: (0.00, 0.00, 0.00)");
 
-        // anchorpointInteractions = new GameObject().transform;
 
-        emptyAnchor = new GameObject().transform;
+        emptyAnchorTransform = new GameObject().transform;
+
+        // place anchor and interactions at world-origin 
+        AnchorInstance = Instantiate(Anchor, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0)); 
+        TestPrefab1Instance = Instantiate(TestPrefab1, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+        TestPrefab2Instance = Instantiate(TestPrefab2, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+        TestPrefab3Instance = Instantiate(TestPrefab3, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));      
+
+        AnchorInstance.SetActive(false);     
+        TestPrefab1Instance.SetActive(false);
+        TestPrefab2Instance.SetActive(false);
+        TestPrefab3Instance.SetActive(false);   
     }
 
     void Update()
@@ -140,56 +154,78 @@ public class DevPositionCalculator : MonoBehaviour
 
     private void calculatePositions(Transform trackedImageTransform, string trackedImageName)
     {
-        // devLogger.printLogMessage("name: " + trackedImageName + " transform: " + trackedImageTransform.position);
+        bool anchorPlaced = false;
 
-        // bool anchorPlaced = false;
+        // devLogger.printLogMessage("ImagePos: " + trackedImageTransform.position + " NewPos: " + emptyAnchorTransform.position); 
 
-        // image(1, 1, 1)
-        Vector3 trackedImagePosition = trackedImageTransform.position;
+        emptyAnchorTransform.rotation = trackedImageTransform.rotation;
 
-        // // new pos (1, 1, 2)
-        // Vector3 newPosition = new Vector3(trackedImageTransform.position.x, trackedImageTransform.position.y, trackedImageTransform.localPosition.z);
+        if (anchorPlaced == false)   
+        {
+            switch (trackedImageName)
+            {
+                case "DevMarker1":
+                    emptyAnchorTransform.position = trackedImageTransform.position + 0 * trackedImageTransform.right + 0 * trackedImageTransform.up + (float)0.5 * trackedImageTransform.forward;    
 
-        emptyAnchor.rotation = trackedImageTransform.rotation;
+                    // update transform of AnchorInstance
+                    AnchorInstance.transform.SetPositionAndRotation(emptyAnchorTransform.position, emptyAnchorTransform.rotation);
+                    AnchorInstance.SetActive(true);     
 
-        emptyAnchor.position = trackedImageTransform.position + 0 * trackedImageTransform.right;
-        emptyAnchor.position = trackedImageTransform.position + 0 * trackedImageTransform.up;
-        emptyAnchor.position = trackedImageTransform.position + (float)0.5 * trackedImageTransform.forward; 
+                    devLogger.printLogMessage("DevMarker1"); 
 
-        Instantiate(TestPrefab2, emptyAnchor);
+                    anchorPlaced = true;
+                    break;
 
-        devLogger.printLogMessage("ImagePos: " + trackedImagePosition + " NewPos: " + emptyAnchor.transform.position); 
+                case "DevMarker2":
+                    emptyAnchorTransform.position = trackedImageTransform.position - (float)0.5 * trackedImageTransform.right + 0 * trackedImageTransform.up + (float)0.5 * trackedImageTransform.forward;
 
-        // switch (trackedImageName)
-        // {
-        //     case "DevMarker1":
-        //         //devLogger.printLogMessage("name: DevMarker1");
-        //         break;
+                    // update transform of AnchorInstance
+                    AnchorInstance.transform.SetPositionAndRotation(emptyAnchorTransform.position, emptyAnchorTransform.rotation);
+                    AnchorInstance.SetActive(true);      
 
-        //     case "DevMarker2":
-        //         //devLogger.printLogMessage("name: DevMarker2");
-        //         break;
+                    devLogger.printLogMessage("DevMarker2");  
 
-        //     case "DevMarker3":
-        //         //devLogger.printLogMessage("name: DevMarker3");
-        //         break;
-        // }
+                    anchorPlaced = true;
+                    break;
 
-        // if (anchorPlaced)
-        // {
+                case "DevMarker3":
+                    emptyAnchorTransform.position = trackedImageTransform.position - (float)0.5 * trackedImageTransform.right + 0 * trackedImageTransform.up + 0 * trackedImageTransform.forward;
+                    
+                    // update transform of AnchorInstance
+                    AnchorInstance.transform.SetPositionAndRotation(emptyAnchorTransform.position, emptyAnchorTransform.rotation);
+                    AnchorInstance.SetActive(true);   
 
-        //     foreach (GameObject interaction in Interactions)
-        //     {
-        //         switch (interaction.name)
-        //         {
-        //             case "DevMarker1":
-        //                 break;
-        //             case "DevMarker2":
-        //                 break;
-        //             case "DevMarker3":
-        //                 break;
-        //         }
-        //     }
-        // }
+                    devLogger.printLogMessage("DevMarker3");        
+
+                    anchorPlaced = true;
+                    break;
+            }            
+        }
+
+
+        if (anchorPlaced)
+        {
+            Transform TestPrefab1Transform = new GameObject().transform;
+            Transform TestPrefab2Transform = new GameObject().transform;
+            Transform TestPrefab3Transform = new GameObject().transform;
+
+            TestPrefab1Transform.rotation = emptyAnchorTransform.rotation;
+            TestPrefab2Transform.rotation = emptyAnchorTransform.rotation;
+            TestPrefab3Transform.rotation = emptyAnchorTransform.rotation;
+
+            TestPrefab1Transform.position = emptyAnchorTransform.position + 0 * trackedImageTransform.right + 0 * trackedImageTransform.up - (float)0.5 * trackedImageTransform.forward; 
+            TestPrefab2Transform.position = emptyAnchorTransform.position + (float)0.5 * trackedImageTransform.right + 0 * trackedImageTransform.up - (float)0.5 * trackedImageTransform.forward; 
+            TestPrefab3Transform.position = emptyAnchorTransform.position + (float)0.5 * trackedImageTransform.right + 0 * trackedImageTransform.up + 0 * trackedImageTransform.forward; 
+
+            TestPrefab1Instance.transform.SetPositionAndRotation(TestPrefab1Transform.position, TestPrefab1Transform.rotation);
+            TestPrefab2Instance.transform.SetPositionAndRotation(TestPrefab2Transform.position, TestPrefab2Transform.rotation);
+            TestPrefab3Instance.transform.SetPositionAndRotation(TestPrefab3Transform.position, TestPrefab3Transform.rotation);
+
+            TestPrefab1Instance.SetActive(true);
+            TestPrefab2Instance.SetActive(true);
+            TestPrefab3Instance.SetActive(true);
+
+            anchorPlaced = false;
+        }
     }
 }
