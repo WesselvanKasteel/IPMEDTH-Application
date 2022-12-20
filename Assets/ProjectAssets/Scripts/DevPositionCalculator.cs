@@ -62,9 +62,9 @@ public class DevPositionCalculator : MonoBehaviour
 
         // place anchor and interactions at world-origin 
         AnchorInstance = Instantiate(Anchor, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0)); 
-        TestPrefab1Instance = Instantiate(TestPrefab1, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
-        TestPrefab2Instance = Instantiate(TestPrefab2, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
-        TestPrefab3Instance = Instantiate(TestPrefab3, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));      
+        TestPrefab1Instance = Instantiate(TestPrefab1, new Vector3(0, -10, 0), new Quaternion(0, 0, 0, 0));
+        TestPrefab2Instance = Instantiate(TestPrefab2, new Vector3(0, -10, 0), new Quaternion(0, 0, 0, 0));
+        TestPrefab3Instance = Instantiate(TestPrefab3, new Vector3(0, -10, 0), new Quaternion(0, 0, 0, 0));      
 
         AnchorInstance.SetActive(false);     
         TestPrefab1Instance.SetActive(false);
@@ -197,7 +197,6 @@ public class DevPositionCalculator : MonoBehaviour
                     break;
             }            
         }
-
 
         if (anchorPlaced)
         {
