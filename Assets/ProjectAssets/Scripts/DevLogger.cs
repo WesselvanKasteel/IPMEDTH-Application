@@ -9,7 +9,7 @@ public class DevLogger : MonoBehaviour
 
     private int messageCounter = 0;
 
-    private void Start()
+    private void Awake()
     {
         logger = gameObject.GetComponent<TextMeshProUGUI>();
     }

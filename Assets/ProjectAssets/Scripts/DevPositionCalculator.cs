@@ -6,7 +6,7 @@ using UnityEngine;
 public class DevPositionCalculator : MonoBehaviour
 {
     // Array of strings containing the names of gameObjects whose position need to be tracked
-    private string[] objectsToBeTracked = { "DevMarker1", "DevMarker2", "DevMarker3" };
+    public string[] objectsToBeTracked;
 
     // GameObjects
     public GameObject ArCamera;
@@ -28,48 +28,51 @@ public class DevPositionCalculator : MonoBehaviour
     private Vector3 lastPositionMobile;
     private Vector3 lastPositionImageTrack;
 
-    // Reference DevLogger script
+    // Reference to scripts
     private DevLogger devLogger;
+    private DevUiController devUiController;
 
     // TEST prefab
-    public GameObject TestPrefab1;
-    public GameObject TestPrefab2;
-    public GameObject TestPrefab3;
+    public GameObject ArtPiecePrefab1;
+    public GameObject ArtPiecePrefab2;
+    public GameObject ArtPiecePrefab3;
 
-    private Transform emptyAnchorTransform;
+    private Transform AnchorPoint;
 
     private GameObject AnchorInstance;
-    private GameObject TestPrefab1Instance;
-    private GameObject TestPrefab2Instance;
-    private GameObject TestPrefab3Instance;
+    private GameObject ArtPiece1;
+    private GameObject ArtPiece2;
+    private GameObject ArtPiece3;
 
-    // Start is called before the first frame update
+
+    private void Awake()
+    {
+        // Get script-component from GameObject
+        devLogger = GameObject.FindGameObjectWithTag("Logs").GetComponent<DevLogger>();
+        devUiController = GameObject.FindGameObjectWithTag("UiController").GetComponent<DevUiController>();
+    }
+
     void Start()
     {
-        // Get component 'DevLogger'
-        devLogger = GameObject.FindGameObjectWithTag("Logs").GetComponent<DevLogger>();
-
         // Update lastPositionMobile
         lastPositionMobile = ArCamera.transform.position;
 
         // Update lastPositionImageTrack
         lastPositionImageTrack = new Vector3(0, 0, 0);
 
-        devLogger.printLogMessage("item: World Origin - pos: (0.00, 0.00, 0.00)");
+        AnchorPoint = new GameObject().transform;
 
+        // Place interactions at in scene
+        ArtPiece1 = Instantiate(ArtPiecePrefab1, new Vector3(0, -10, 0), new Quaternion(0, 0, 0, 0));
+        ArtPiece2 = Instantiate(ArtPiecePrefab2, new Vector3(0, -10, 0), new Quaternion(0, 0, 0, 0));
+        ArtPiece3 = Instantiate(ArtPiecePrefab3, new Vector3(0, -10, 0), new Quaternion(0, 0, 0, 0));      
 
-        emptyAnchorTransform = new GameObject().transform;
+        // Make interactions inactive
+        ArtPiece1.SetActive(false);
+        ArtPiece2.SetActive(false);
+        ArtPiece3.SetActive(false);
 
-        // place anchor and interactions at world-origin 
-        AnchorInstance = Instantiate(Anchor, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0)); 
-        TestPrefab1Instance = Instantiate(TestPrefab1, new Vector3(0, -10, 0), new Quaternion(0, 0, 0, 0));
-        TestPrefab2Instance = Instantiate(TestPrefab2, new Vector3(0, -10, 0), new Quaternion(0, 0, 0, 0));
-        TestPrefab3Instance = Instantiate(TestPrefab3, new Vector3(0, -10, 0), new Quaternion(0, 0, 0, 0));      
-
-        AnchorInstance.SetActive(false);     
-        TestPrefab1Instance.SetActive(false);
-        TestPrefab2Instance.SetActive(false);
-        TestPrefab3Instance.SetActive(false);   
+        //devLogger.printLogMessage("item: World Origin - pos: (0.00, 0.00, 0.00)");
     }
 
     void Update()
@@ -89,7 +92,7 @@ public class DevPositionCalculator : MonoBehaviour
                 lastPositionMobile = transformMobile.transform.position;
 
                 // Call printLogMessage from 'DevLogger'
-                devLogger.printLogMessage("item: Mobile - pos: " + transformMobile.transform.position + " - rot: " + transformMobile.transform.rotation);
+                //devLogger.printLogMessage("item: Mobile - pos: " + transformMobile.transform.position + " - rot: " + transformMobile.transform.rotation);
             }
         }
 
@@ -106,7 +109,7 @@ public class DevPositionCalculator : MonoBehaviour
                 lastPositionImageTrack = transformImageTrack.transform.position;
 
                 // Call printLogMessage from 'DevLogger'
-                devLogger.printLogMessage("item: ImageTrack - pos: " + transformImageTrack.transform.position + " - rot: " + transformImageTrack.transform.rotation);
+                //devLogger.printLogMessage("item: ImageTrack - pos: " + transformImageTrack.transform.position + " - rot: " + transformImageTrack.transform.rotation);
             }
         }
     }
@@ -118,6 +121,8 @@ public class DevPositionCalculator : MonoBehaviour
 
     public void updatePositionImageTrack(Transform trackedImageTransform, string trackedImageName)
     {
+        devUiController.ImageTracked = true;
+
         if (trackedImageTransform.position != new Vector3(0, 0, 0))
         {
             // REMOVE when logs are no longer needed
@@ -154,45 +159,39 @@ public class DevPositionCalculator : MonoBehaviour
 
         // devLogger.printLogMessage("ImagePos: " + trackedImageTransform.position + " NewPos: " + emptyAnchorTransform.position); 
 
-        emptyAnchorTransform.rotation = trackedImageTransform.rotation;
+        AnchorPoint.rotation = trackedImageTransform.rotation;
 
         if (anchorPlaced == false)   
         {
             switch (trackedImageName)
             {
-                case "DevMarker1":
-                    emptyAnchorTransform.position = trackedImageTransform.position + 0 * trackedImageTransform.right + 0 * trackedImageTransform.up + (float)0.5 * trackedImageTransform.forward;    
+                case "DevArtPiece1":
+                    AnchorPoint.position = trackedImageTransform.position + 0 * trackedImageTransform.right + 0 * trackedImageTransform.up + (float)0.5 * trackedImageTransform.forward;
 
-                    // update transform of AnchorInstance
-                    AnchorInstance.transform.SetPositionAndRotation(emptyAnchorTransform.position, emptyAnchorTransform.rotation);
-                    AnchorInstance.SetActive(true);     
+                    // Update transform of AnchorPoint
+                    AnchorPoint.SetPositionAndRotation(AnchorPoint.position, AnchorPoint.rotation);
 
-                    devLogger.printLogMessage("DevMarker1"); 
-
-                    anchorPlaced = true;
-                    break;
-
-                case "DevMarker2":
-                    emptyAnchorTransform.position = trackedImageTransform.position - (float)0.5 * trackedImageTransform.right + 0 * trackedImageTransform.up + (float)0.5 * trackedImageTransform.forward;
-
-                    // update transform of AnchorInstance
-                    AnchorInstance.transform.SetPositionAndRotation(emptyAnchorTransform.position, emptyAnchorTransform.rotation);
-                    AnchorInstance.SetActive(true);      
-
-                    devLogger.printLogMessage("DevMarker2");  
+                    //AnchorInstance.transform.SetPositionAndRotation(emptyAnchorTransform.position, emptyAnchorTransform.rotation);
+                    //AnchorInstance.SetActive(true);     
 
                     anchorPlaced = true;
                     break;
 
-                case "DevMarker3":
-                    emptyAnchorTransform.position = trackedImageTransform.position - (float)0.5 * trackedImageTransform.right + 0 * trackedImageTransform.up + 0 * trackedImageTransform.forward;
-                    
-                    // update transform of AnchorInstance
-                    AnchorInstance.transform.SetPositionAndRotation(emptyAnchorTransform.position, emptyAnchorTransform.rotation);
-                    AnchorInstance.SetActive(true);   
+                case "DevArtPiece2":
+                    AnchorPoint.position = trackedImageTransform.position - (float)0.5 * trackedImageTransform.right + 0 * trackedImageTransform.up + (float)0.5 * trackedImageTransform.forward;
 
-                    devLogger.printLogMessage("DevMarker3");        
+                    // Update transform of AnchorPoint
+                    AnchorPoint.SetPositionAndRotation(AnchorPoint.position, AnchorPoint.rotation);     
 
+                    anchorPlaced = true;
+                    break;
+
+                case "DevArtPiece3":
+                    AnchorPoint.position = trackedImageTransform.position - (float)0.5 * trackedImageTransform.right + 0 * trackedImageTransform.up + 0 * trackedImageTransform.forward;
+
+                    // Update transform of AnchorPoint
+                    AnchorPoint.SetPositionAndRotation(AnchorPoint.position, AnchorPoint.rotation);
+    
                     anchorPlaced = true;
                     break;
             }            
@@ -200,25 +199,25 @@ public class DevPositionCalculator : MonoBehaviour
 
         if (anchorPlaced)
         {
-            Transform TestPrefab1Transform = new GameObject().transform;
-            Transform TestPrefab2Transform = new GameObject().transform;
-            Transform TestPrefab3Transform = new GameObject().transform;
+            Transform ArtPiecePrefabTransform1 = new GameObject().transform;
+            Transform ArtPiecePrefabTransform2 = new GameObject().transform;
+            Transform ArtPiecePrefabTransform3 = new GameObject().transform;
 
-            TestPrefab1Transform.rotation = emptyAnchorTransform.rotation;
-            TestPrefab2Transform.rotation = emptyAnchorTransform.rotation;
-            TestPrefab3Transform.rotation = emptyAnchorTransform.rotation;
+            ArtPiecePrefabTransform1.rotation = AnchorPoint.rotation;
+            ArtPiecePrefabTransform2.rotation = AnchorPoint.rotation;
+            ArtPiecePrefabTransform3.rotation = AnchorPoint.rotation;
 
-            TestPrefab1Transform.position = emptyAnchorTransform.position + 0 * trackedImageTransform.right + 0 * trackedImageTransform.up - (float)0.5 * trackedImageTransform.forward; 
-            TestPrefab2Transform.position = emptyAnchorTransform.position + (float)0.5 * trackedImageTransform.right + 0 * trackedImageTransform.up - (float)0.5 * trackedImageTransform.forward; 
-            TestPrefab3Transform.position = emptyAnchorTransform.position + (float)0.5 * trackedImageTransform.right + 0 * trackedImageTransform.up + 0 * trackedImageTransform.forward; 
+            ArtPiecePrefabTransform1.position = AnchorPoint.position + 0 * trackedImageTransform.right + 0 * trackedImageTransform.up - (float)0.5 * trackedImageTransform.forward; 
+            ArtPiecePrefabTransform2.position = AnchorPoint.position + (float)0.5 * trackedImageTransform.right + 0 * trackedImageTransform.up - (float)0.5 * trackedImageTransform.forward; 
+            ArtPiecePrefabTransform3.position = AnchorPoint.position + (float)0.5 * trackedImageTransform.right + 0 * trackedImageTransform.up + 0 * trackedImageTransform.forward; 
 
-            TestPrefab1Instance.transform.SetPositionAndRotation(TestPrefab1Transform.position, TestPrefab1Transform.rotation);
-            TestPrefab2Instance.transform.SetPositionAndRotation(TestPrefab2Transform.position, TestPrefab2Transform.rotation);
-            TestPrefab3Instance.transform.SetPositionAndRotation(TestPrefab3Transform.position, TestPrefab3Transform.rotation);
+            ArtPiece1.transform.SetPositionAndRotation(ArtPiecePrefabTransform1.position, ArtPiecePrefabTransform1.rotation);
+            ArtPiece2.transform.SetPositionAndRotation(ArtPiecePrefabTransform2.position, ArtPiecePrefabTransform2.rotation);
+            ArtPiece3.transform.SetPositionAndRotation(ArtPiecePrefabTransform3.position, ArtPiecePrefabTransform3.rotation);
 
-            TestPrefab1Instance.SetActive(true);
-            TestPrefab2Instance.SetActive(true);
-            TestPrefab3Instance.SetActive(true);
+            ArtPiece1.SetActive(true);
+            ArtPiece2.SetActive(true);
+            ArtPiece3.SetActive(true);
 
             anchorPlaced = false;
         }

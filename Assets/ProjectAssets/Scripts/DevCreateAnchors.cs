@@ -87,7 +87,7 @@ public class DevCreateAnchors : MonoBehaviour
             else
             {
                 //trackedImage is lost
-                devLogger.printLogMessage("Tracking disabled");
+                //devLogger.printLogMessage("Tracking disabled");
             }
         }
     }
