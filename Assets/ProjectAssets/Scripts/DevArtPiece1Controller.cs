@@ -9,6 +9,7 @@ public class DevArtPiece1Controller : MonoBehaviour
     private static Camera arCamera;
 
     public GameObject text1;
+    public GameObject text2;
 
     // Reference to scripts
     private DevLogger devLogger;
@@ -23,7 +24,8 @@ public class DevArtPiece1Controller : MonoBehaviour
     void Start()
     {
         text1.SetActive(false);
-            
+        text2.SetActive(false);
+
         var all = FindObjectsOfType<Camera>();
 
         foreach (Camera item in all)
@@ -54,6 +56,7 @@ public class DevArtPiece1Controller : MonoBehaviour
                 {
                     devLogger.printLogMessage("Button pressed");
 
+
                     if (text1.activeSelf == false)
                     {
                         text1.SetActive(true);
@@ -62,6 +65,7 @@ public class DevArtPiece1Controller : MonoBehaviour
                     {
                         text1.SetActive(false);
                     }
+
 
                 }
             }

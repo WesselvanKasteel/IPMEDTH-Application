@@ -9,6 +9,9 @@ using UnityEngine.XR.ARSubsystems;
 [RequireComponent(typeof(ARTrackedImageManager))]
 public class DevCreateAnchors : MonoBehaviour
 {
+    // Public variables
+    public bool ScanningDone = false;
+
     // Reference to AR tracked image manager component
     private ARTrackedImageManager _trackedImagesManager;
 
@@ -27,7 +30,6 @@ public class DevCreateAnchors : MonoBehaviour
 
     // Reference DevLogger script
     private DevLogger devLogger;
-
 
     void Awake()
     {
@@ -83,6 +85,8 @@ public class DevCreateAnchors : MonoBehaviour
             {
                 //trackedImage is tracked
                 StartCoroutine(TrackedImageCoroutine(trackedImage));
+
+                DisableTrackedImageManager();
             }
             else
             {
@@ -90,5 +94,21 @@ public class DevCreateAnchors : MonoBehaviour
                 //devLogger.printLogMessage("Tracking disabled");
             }
         }
+    }
+
+    public void EnableTrackedImageManager()
+    {
+        _trackedImagesManager.enabled = true;
+    }
+
+    public void DisableTrackedImageManager()
+    {
+        StartCoroutine(DisableManager());
+    }
+    IEnumerator DisableManager()
+    {
+        yield return new WaitForSeconds(0.25f);
+
+        _trackedImagesManager.enabled = false;
     }
 }
